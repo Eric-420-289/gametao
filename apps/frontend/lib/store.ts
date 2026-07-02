@@ -31,12 +31,12 @@ export const useStore = create<GameStore>((set, get) => ({
       return;
     }
     
-    // ดึงจาก Env ก่อน ถ้าไม่มีให้ใช้ URL ของ Render เป็นค่าสำรองแทน localhost
-    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'https://gametao-1.onrender.com';
+// ใส่ URL ตรงๆ ไปเลย ไม่ต้องพึ่ง process.env แล้ว
+    const socketUrl = 'https://gametao-1.onrender.com';
     
-    console.log('Connecting to Socket URL:', socketUrl);
+    // ใส่ log ไว้จับผิด Vercel
+    console.log('🚀 ใช้งาน URL ไม้ตาย:', socketUrl);
 
-    // เอา transports: ['websocket'] ออก เพื่อให้มือถือเชื่อมต่อง่ายขึ้น
     const socket = io(socketUrl);
 
     socket.on('connect', () => {
