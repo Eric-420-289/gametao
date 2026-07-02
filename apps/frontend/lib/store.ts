@@ -25,39 +25,55 @@ export const useStore = create<GameStore>((set, get) => ({
   player: null,
   gameState: null,
   messages: [],
+  
   connect: () => {
     if (get().socket) {
       return;
     }
-    const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000', {
-      transports: ['websocket']
-    });
+    
+    // ดึงจาก Env ก่อน ถ้าไม่มีให้ใช้ URL ของ Render เป็นค่าสำรองแทน localhost
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'https://gametao-1.onrender.com';
+    
+    console.log('Connecting to Socket URL:', socketUrl);
+
+    // เอา transports: ['websocket'] ออก เพื่อให้มือถือเชื่อมต่อง่ายขึ้น
+    const socket = io(socketUrl);
+
     socket.on('connect', () => {
-      console.log('connected');
+      console.log('connected successfully');
     });
+    
     socket.on('roomCreated', ({ room, player }) => {
       set({ room, player });
     });
+    
     socket.on('roomJoined', ({ room, player }) => {
       set({ room, player });
     });
+    
     socket.on('roomUpdated', ({ room }) => {
       set({ room });
     });
+    
     socket.on('gameStarted', ({ gameState, room }) => {
       set({ gameState, room });
     });
+    
     socket.on('gameUpdated', ({ gameState, room }) => {
       set({ gameState, room });
     });
+    
     socket.on('chatReceived', ({ message }) => {
       set((state) => ({ messages: [...state.messages, message] }));
     });
+    
     socket.on('error', ({ message }) => {
       console.error(message);
     });
+    
     set({ socket });
   },
+
   createRoom: async (playerName: string, playWithBot = false, roomCode?: string) => {
     const { socket } = get();
     if (!socket) {
@@ -78,6 +94,7 @@ export const useStore = create<GameStore>((set, get) => ({
       });
     });
   },
+
   joinRoom: async (code: string, name: string) => {
     const { socket } = get();
     if (!socket) {
@@ -98,6 +115,7 @@ export const useStore = create<GameStore>((set, get) => ({
       });
     });
   },
+
   sendMessage: (content, type = 'message') => {
     const { socket } = get();
     if (!socket) {
@@ -105,22 +123,27 @@ export const useStore = create<GameStore>((set, get) => ({
     }
     socket.emit('chatMessage', { content, type });
   },
+
   startGame: () => {
     const { socket } = get();
     socket?.emit('startGame');
   },
+
   rollDice: () => {
     const { socket } = get();
     socket?.emit('rollDice');
   },
+
   newRound: () => {
     const { socket } = get();
     socket?.emit('newRound');
   },
+
   bid: (quantity, value) => {
     const { socket } = get();
     socket?.emit('bid', { quantity, value });
   },
+
   challenge: () => {
     const { socket } = get();
     socket?.emit('challenge');
