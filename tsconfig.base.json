@@ -10,11 +10,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-
-    "ignoreDeprecations": "6.0",
-
     "baseUrl": ".",
-
     "paths": {
       "@shared/*": ["packages/shared/src/*"],
       "@shared": ["packages/shared/src/index.ts"],
