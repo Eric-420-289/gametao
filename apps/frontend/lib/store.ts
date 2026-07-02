@@ -32,7 +32,7 @@ export const useStore = create<GameStore>((set, get) => ({
     }
     
     // ดึงจาก Env ก่อน ถ้าไม่มีให้ใช้ URL ของ Render เป็นค่าสำรองแทน localhost
-    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'https://gametao.onrender.com';
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'https://gametao-1.onrender.com';
     
     console.log('Connecting to Socket URL:', socketUrl);
 
