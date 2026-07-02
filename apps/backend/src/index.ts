@@ -14,13 +14,13 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: '*',
     methods: ['GET', 'POST']
   }
 });
 
 app.use(helmet());
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000' }));
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 const rooms = new Map<string, Room>();
