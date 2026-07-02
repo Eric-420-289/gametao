@@ -172,7 +172,7 @@ function scheduleBotTurn(roomId: string) {
       gameState.state.currentBid.quantity > threshold ||
       (gameState.state.currentBid.quantity === threshold && Math.random() < 0.05);
     if (shouldChallenge) {
-      applyChallengeResolution(room, gameState);
+      applyChallengeResolution(room, gameState, currentPlayer.id);
       return;
     }
     runBotBid();
